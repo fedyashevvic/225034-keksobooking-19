@@ -98,9 +98,9 @@ var hideElement = function (el) {
   el.style.display = 'none';
 };
 
-var setNewData = function (data, key) {
+var setNewData = function (data, key, addText) {
   if (data) {
-    key.textContent = data;
+    key.textContent = addText;
   } else {
     hideElement(key);
   }
@@ -152,6 +152,13 @@ var setFeatures = function (data, key, parent) {
   }
 };
 
+var setAvatar = function (data, key) {
+  if (data) {
+    key.setAttribute('src', data);
+  } else {
+    hideElement(key);
+  }
+};
 
 var renderPinDetails = function (data, key) {
   var pinDetailsElement = similarPinDetailsBlock.cloneNode(true);
@@ -165,29 +172,21 @@ var renderPinDetails = function (data, key) {
   var description = pinDetailsElement.querySelector('.popup__description');
   var apartPhotos = pinDetailsElement.querySelector('.popup__photos');
   var avatar = pinDetailsElement.querySelector('.popup__avatar');
+  var priceTextContent = data[key].offer.price + '₽/ночь';
+  var checkInTimeTextContent = 'Заезд после ' + data[key].offer.checkin + ', выезд до ' + data[key].offer.checkout + '.';
+  var houseCapasityTextContent = data[key].offer.rooms + ' комнаты для ' + data[key].offer.guests + ' гостей.';
 
-  setNewData(data[key].offer.title, title);
-  setNewData(data[key].offer.address, address);
-  setNewData(data[key].offer.price, price);
-  price.textContent += '₽/ночь';
-
+  setNewData(data[key].offer.title, title, data[key].offer.title);
+  setNewData(data[key].offer.address, address, data[key].offer.address);
+  setNewData(data[key].offer.price, price, priceTextContent);
   defineApartnemtType(data[key].offer.type, type);
-
   setNewData(data[key].offer.rooms, houseCapasity);
-  setNewData(data[key].offer.guests, houseCapasity);
-  houseCapasity.textContent = data[key].offer.rooms + ' комнаты для ' + data[key].offer.guests + ' гостей.';
-
-  setNewData(data[key].offer.checkin, checkInTime);
-  checkInTime.textContent = 'Заезд после ' + data[key].offer.checkin + ', выезд до ' + data[key].offer.checkout + '.';
-
+  setNewData(data[key].offer.guests, houseCapasity, houseCapasityTextContent);
+  setNewData(data[key].offer.checkin, checkInTime, checkInTimeTextContent);
   setFeatures(data[key].offer.features, featuresItems, pinDetailsElement);
-
-  setNewData(data[key].offer.description, description);
-
+  setNewData(data[key].offer.description, description, data[key].offer.description);
   setPhotos(data[key].offer.photos, apartPhotos, pinDetailsElement);
-
-  setNewData(data[key].author.avatar, avatar);
-  avatar.setAttribute('src', data[key].author.avatar);
+  setAvatar(data[key].author.avatar, avatar);
 
   document.querySelector('.map__filters-container').before(pinDetailsElement);
 };
