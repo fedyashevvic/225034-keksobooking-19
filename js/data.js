@@ -97,5 +97,6 @@
   window.data = {
     bookingData: bookingData,
     renderPinItem: renderPinItem,
+    mapWidth: mapWidth
   };
 })();

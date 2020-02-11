@@ -5,11 +5,11 @@
   var filtersFormInputes = document.querySelectorAll('.map__filters input');
   var filtersFormSelects = document.querySelectorAll('.map__filters select');
   var mainPin = document.querySelector('.map__pin--main');
-  var mainPinWidth = (mainPin.clientWidth / 2);
-  var mainPinHeight = (mainPin.clientHeight / 2);
+  var mainPinWidth = mainPin.clientWidth / 2;
+  var mainPinHeight = mainPin.clientHeight / 2;
 
   var mainPinPosition = function (x, y) {
-    var currentPinPosition = Math.round((mainPin.offsetLeft + (x))) + '; ' + Math.round((mainPin.offsetTop + (y)));
+    var currentPinPosition = Math.floor((mainPin.offsetLeft + (x))) + '; ' + Math.round((mainPin.offsetTop + (y)));
     document.querySelector('input#address').value = currentPinPosition;
   };
 
@@ -41,6 +41,8 @@
 
   window.activation = {
     activatePage: activatePage,
-    mainPin: mainPin
+    mainPin: mainPin,
+    mainPinWidth: mainPinWidth,
+    mainPinPosition: mainPinPosition
   };
 })();
