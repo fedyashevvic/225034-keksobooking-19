@@ -1,6 +1,13 @@
 'use strict';
 
+// utils
+
 var ACTIVE_PIN_HEIGHT = 84;
+var ESC = 'Escape';
+
+
+// arra data rendering
+
 var numberOfData = 8;
 var avatars = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var titles = ['Лучшая квартира в городе', 'Новая квартира', 'Прямо в центре города', 'Пентхаус в небоскребе', 'Двухкомнатная квартира после ремонта', 'Студия в новостройке', 'Большая квартира у метро', 'Квартира для кодеров'];
@@ -13,21 +20,9 @@ var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 var mapWidth = document.querySelector('.map').clientWidth;
 var pinWidth = 25;
 var pinHeight = 70;
-
 var bookingData = [];
-
-var similarBlock = document.querySelector('#pin').content.querySelector('.map__pin');
-var similarPinDetailsBlock = document.querySelector('#card').content.querySelector('.map__card');
 var fragment = document.createDocumentFragment();
-
-var formInputs = document.querySelectorAll('.ad-form fieldset');
-var filtersFormInputes = document.querySelectorAll('.map__filters input');
-var filtersFormSelects = document.querySelectorAll('.map__filters select');
-var mainPin = document.querySelector('.map__pin--main');
-var mainPinWidth = (mainPin.clientWidth / 2);
-var mainPinHeight = (mainPin.clientHeight / 2);
-var roomSelect = document.querySelector('#room_number');
-var capasitySelect = document.querySelector('#capacity');
+var similarBlock = document.querySelector('#pin').content.querySelector('.map__pin');
 
 var getRamdomElement = function (arr) {
   var elNum = Math.round(Math.random() * (arr.length - 1));
@@ -107,6 +102,14 @@ var renderPinItem = function (data) {
 
 generateBookingData();
 
+// page activation
+
+var formInputs = document.querySelectorAll('.ad-form fieldset');
+var filtersFormInputes = document.querySelectorAll('.map__filters input');
+var filtersFormSelects = document.querySelectorAll('.map__filters select');
+var mainPin = document.querySelector('.map__pin--main');
+var mainPinWidth = (mainPin.clientWidth / 2);
+var mainPinHeight = (mainPin.clientHeight / 2);
 
 var mainPinPosition = function (x, y) {
   var currentPinPosition = Math.round((mainPin.offsetLeft + (x))) + '; ' + Math.round((mainPin.offsetTop + (y)));
@@ -139,14 +142,30 @@ var activatePage = function () {
   document.querySelector('.ad-form').classList.remove('ad-form--disabled');
   openPinDetails();
 };
+
+// map and pin details
+
 var openPinDetails = function () {
   var pins = document.querySelectorAll('button[type="button"].map__pin');
   var cards = document.querySelectorAll('.map__card');
+  var openedCard;
 
   for (var i = 0; i < pins.length; i++) {
     (function (pin, card) {
       pin.addEventListener('click', function () {
+        if (openedCard) {
+          openedCard.classList.add('hidden');
+        }
         card.classList.remove('hidden');
+        openedCard = card;
+        openedCard.querySelector('button.popup__close').addEventListener('click', function () {
+          openedCard.classList.add('hidden');
+        });
+        document.addEventListener('keydown', function (evt) {
+          if (evt.key === ESC) {
+            openedCard.classList.add('hidden');
+          }
+        });
       });
     })(pins[i], cards[i]);
   }
@@ -162,23 +181,8 @@ mainPin.addEventListener('keydown', function (evt) {
   }
 });
 
-var submitCheckSelect = function () {
-  if (roomSelect.value === '1' && capasitySelect.value !== '1') {
-    capasitySelect.setCustomValidity('При данном кол-ве комнат поместится только 1 человек');
-  } else if (roomSelect.value === '2' && (capasitySelect.value === '3' || capasitySelect.value === '0')) {
-    capasitySelect.setCustomValidity('При данном кол-ве комнат поместится до 2х человек');
-  } else if (roomSelect.value === '3' && capasitySelect.value === '0') {
-    capasitySelect.setCustomValidity('При данном кол-ве комнат поместится до 3х человек');
-  } else if (roomSelect.value === '100' && capasitySelect.value !== '0') {
-    capasitySelect.setCustomValidity('При данном кол-ве комнат, допустим только вариант "Не для гостей"');
-  } else {
-    capasitySelect.setCustomValidity('');
-  }
-};
-
-capasitySelect.addEventListener('change', submitCheckSelect);
-roomSelect.addEventListener('change', submitCheckSelect);
-
+// card rendering
+var similarPinDetailsBlock = document.querySelector('#card').content.querySelector('.map__card');
 
 var hideElement = function (el) {
   el.style.display = 'none';
@@ -278,4 +282,54 @@ var renderPinDetails = function (data, key) {
   document.querySelector('.map__filters-container').before(pinDetailsElement);
 };
 
+// form validation
+var roomSelect = document.querySelector('#room_number');
+var capasitySelect = document.querySelector('#capacity');
+var apartmentTypeSelect = document.querySelector('#type');
+var priceInput = document.querySelector('#price');
+var checkInSelect = document.querySelector('#timein');
+var checkOutSelect = document.querySelector('#timeout');
 
+
+var numberOfRoomsHandler = function () {
+  if (roomSelect.value === '1' && capasitySelect.value !== '1') {
+    capasitySelect.setCustomValidity('При данном кол-ве комнат поместится только 1 человек');
+  } else if (roomSelect.value === '2' && (capasitySelect.value === '3' || capasitySelect.value === '0')) {
+    capasitySelect.setCustomValidity('При данном кол-ве комнат поместится до 2х человек');
+  } else if (roomSelect.value === '3' && capasitySelect.value === '0') {
+    capasitySelect.setCustomValidity('При данном кол-ве комнат поместится до 3х человек');
+  } else if (roomSelect.value === '100' && capasitySelect.value !== '0') {
+    capasitySelect.setCustomValidity('При данном кол-ве комнат, допустим только вариант "Не для гостей"');
+  } else {
+    capasitySelect.setCustomValidity('');
+  }
+};
+
+capasitySelect.addEventListener('change', numberOfRoomsHandler);
+roomSelect.addEventListener('change', numberOfRoomsHandler);
+
+var minPriceHandler = function () {
+  if (apartmentTypeSelect.value === 'bungalo') {
+    priceInput.setAttribute('min', '0');
+  } else if (apartmentTypeSelect.value === 'flat') {
+    priceInput.setAttribute('min', '1000');
+  } else if (apartmentTypeSelect.value === 'house') {
+    priceInput.setAttribute('min', '5000');
+    priceInput.setAttribute('placeholder', '5000');
+  } else if (apartmentTypeSelect.value === 'palace') {
+    priceInput.setAttribute('min', '10000');
+    priceInput.setAttribute('placeholder', '10000');
+  }
+};
+
+apartmentTypeSelect.addEventListener('change', minPriceHandler);
+
+var checkInOutTimesHandler = function (evt) {
+  if (checkInSelect.value !== checkOutSelect.value) {
+    checkInSelect.value = evt.target.value;
+    checkOutSelect.value = evt.target.value;
+  }
+};
+
+checkInSelect.addEventListener('change', checkInOutTimesHandler);
+checkOutSelect.addEventListener('change', checkInOutTimesHandler);
