@@ -24,7 +24,7 @@
       x: evt.clientX,
       y: evt.clientY
     };
-    var onMouseMove = function (moveEvt) {     
+    var onMouseMove = function (moveEvt) {
       var currentPosition = {
         x: startPosition.x - moveEvt.clientX,
         y: startPosition.y - moveEvt.clientY
