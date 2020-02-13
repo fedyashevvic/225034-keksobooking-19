@@ -16,6 +16,7 @@ var mapWidth = document.querySelector('.map').clientWidth;
 var pinWidth = 25;
 var pinHeight = 70;
 var bookingData = [];
+var similarBlock = document.querySelector('#pin').content.querySelector('.map__pin');
 var fragment = document.createDocumentFragment();
 var similarBlock = document.querySelector('#pin').content.querySelector('.map__pin');
 var formInputs = document.querySelectorAll('.ad-form fieldset');
