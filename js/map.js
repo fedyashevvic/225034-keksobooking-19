@@ -103,6 +103,7 @@
 
   window.activation.mainPin.addEventListener('mousedown', onMouseDownActivate);
   window.activation.mainPin.addEventListener('keydown', onKeyDownActivate);
+
   window.map = {
     openPinDetails: openPinDetails,
   };
