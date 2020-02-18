@@ -11,14 +11,14 @@
       if (xhr.status === CODE_SUCCESS) {
         onSuccess(xhr.response);
       } else {
-        onError('Сервер недоступен, попробуйте позднее!');
+        onError('Сервер недоступен, попробуйте позже!');
       }
     });
     xhr.addEventListener('error', function () {
-      onError(500);
+      onError('К сожалению, произошел сбой сети, проверьте подключение к интернету!');
     });
     xhr.addEventListener('timeout', function () {
-      onError(300);
+      onError('К сожалению, запрос не успел выполнится, обновите страницу.');
     });
 
     xhr.timeout = 10000;
@@ -26,10 +26,7 @@
     xhr.send();
   };
 
-  var loadSuccessHandler = function (data) {
-    window.data.renderPinItem(data);
+  window.backend = {
+    load: load,
   };
-
-  load(loadSuccessHandler);
-
 })();

@@ -29,6 +29,17 @@
     hidePinElements((document.querySelectorAll('button[type="button"].map__pin')), true);
   };
 
+  var loadSuccessHandler = function (data) {
+    window.data.renderPinItem(data);
+  };
+  var loadErrorHandler = function (error) {
+    var errorMessage = document.createElement('div');
+    errorMessage.style = 'position: absolte; width: 100%; background: red; color: #fff; text-align: center;';
+    errorMessage.textContent = error;
+    document.querySelector('main').before(errorMessage);
+  };
+  window.backend.load(loadSuccessHandler, loadErrorHandler);
+
   window.data = {
     renderPinItem: renderPinItem,
     mapWidth: mapWidth,
