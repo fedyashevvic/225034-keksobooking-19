@@ -3,6 +3,7 @@
 (function () {
   var DATA_URL = 'https://js.dump.academy/keksobooking/data';
   var CODE_SUCCESS = 200;
+  var TIMEOUT_LIMIT = 10000;
 
   var load = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
@@ -21,7 +22,7 @@
       onError('К сожалению, запрос не успел выполнится, обновите страницу.');
     });
 
-    xhr.timeout = 10000;
+    xhr.timeout = TIMEOUT_LIMIT;
     xhr.open('GET', DATA_URL);
     xhr.send();
   };
