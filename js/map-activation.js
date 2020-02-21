@@ -29,7 +29,7 @@
   disablePage();
 
   var activatePage = function () {
-    window.data.renderPinItem(window.data.bookingData);
+    window.data.hidePinElements((document.querySelectorAll('button[type="button"].map__pin')), false);
     mainPinPosition(mainPinWidth, window.utils.ACTIVE_PIN_HEIGHT);
     changeInputsCondition(formInputs, false);
     changeInputsCondition(filtersFormInputes, false);

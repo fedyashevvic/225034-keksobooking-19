@@ -36,12 +36,12 @@
 
   var setPhotos = function (data, key, parent) {
     if (data) {
-      key.querySelector('img').setAttribute('src', data[0]);
-      for (var i = 1; i < data.length; i++) {
+      for (var i = 0; i < data.length; i++) {
         var photo = parent.querySelector('.popup__photos').cloneNode(true);
         photo.querySelector('img').setAttribute('src', data[i]);
         parent.appendChild(photo);
       }
+      parent.querySelector('.popup__photos').querySelector('img').remove();
     } else {
       hideElement(key);
     }
