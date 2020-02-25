@@ -36,28 +36,26 @@
 
   var setPhotos = function (data, key, parent) {
     if (data) {
-      for (var i = 0; i < data.length; i++) {
+      data.forEach(function (image) {
         var photo = parent.querySelector('.popup__photos').cloneNode(true);
-        photo.querySelector('img').setAttribute('src', data[i]);
+        photo.querySelector('img').setAttribute('src', image);
         parent.appendChild(photo);
-      }
+      });
       parent.querySelector('.popup__photos').querySelector('img').remove();
-    } else {
-      hideElement(key);
     }
   };
 
   var setFeatures = function (data, key, parent) {
-    for (var j = 0; j < key.length; j++) {
-      key[j].remove();
-    }
+    key.forEach(function (el) {
+      el.remove();
+    });
     if (data) {
-      for (var k = 0; k < data.length; k++) {
+      data.forEach(function (feature) {
         var newFeature = document.createElement('li');
-        var currentClass = 'popup__feature--' + data[k];
+        var currentClass = 'popup__feature--' + feature;
         newFeature.classList.add('popup__feature', currentClass);
         parent.querySelector('.popup__features').appendChild(newFeature);
-      }
+      });
     }
   };
 
