@@ -52,4 +52,18 @@
   checkInSelect.addEventListener('change', checkInOutTimesHandler);
   checkOutSelect.addEventListener('change', checkInOutTimesHandler);
 
+  var validateForm = function (el) {
+    if (!el.value) {
+      el.style.border = '2px solid red';
+      el.addEventListener('mousedown', function () {
+        el.style.border = '1px solid #d9d9d3';
+      });
+    }
+  };
+
+  var validationHandler = function () {
+  };
+
+  document.querySelector('.ad-form__submit').addEventListener('click', validationHandler);
+
 })();

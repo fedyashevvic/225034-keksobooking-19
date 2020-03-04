@@ -75,14 +75,16 @@
     var pins = document.querySelectorAll('button[type="button"].map__pin');
     var cards = document.querySelectorAll('.map__card');
     var openedCard;
+    var activePin;
 
     var closeOpenedCardHendler = function () {
       openedCard.classList.add('hidden');
+      activePin.classList.remove('map__pin--active');
     };
 
     var onEscCloseWindow = function (evt) {
       if (evt.key === window.utils.ESC) {
-        openedCard.classList.add('hidden');
+        closeOpenedCardHendler();
       }
     };
 
@@ -90,10 +92,12 @@
       (function (pin, card) {
         pin.addEventListener('click', function () {
           if (openedCard) {
-            openedCard.classList.add('hidden');
+            closeOpenedCardHendler();
           }
+          pin.classList.add('map__pin--active');
           card.classList.remove('hidden');
           openedCard = card;
+          activePin = pin;
           openedCard.querySelector('button.popup__close').addEventListener('click', closeOpenedCardHendler);
           document.addEventListener('keydown', onEscCloseWindow);
         });
