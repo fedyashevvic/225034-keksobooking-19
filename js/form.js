@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var titleInput = document.querySelector('input#title');
   var roomSelect = document.querySelector('#room_number');
   var capasitySelect = document.querySelector('#capacity');
   var apartmentTypeSelect = document.querySelector('#type');
@@ -10,17 +11,23 @@
 
 
   var numberOfRoomsHandler = function () {
+    var valid = true;
     if (roomSelect.value === '1' && capasitySelect.value !== '1') {
       capasitySelect.setCustomValidity('При данном кол-ве комнат поместится только 1 человек');
+      valid = false;
     } else if (roomSelect.value === '2' && (capasitySelect.value === '3' || capasitySelect.value === '0')) {
       capasitySelect.setCustomValidity('При данном кол-ве комнат поместится до 2х человек');
+      valid = false;
     } else if (roomSelect.value === '3' && capasitySelect.value === '0') {
       capasitySelect.setCustomValidity('При данном кол-ве комнат поместится до 3х человек');
+      valid = false;
     } else if (roomSelect.value === '100' && capasitySelect.value !== '0') {
       capasitySelect.setCustomValidity('При данном кол-ве комнат, допустим только вариант "Не для гостей"');
+      valid = false;
     } else {
       capasitySelect.setCustomValidity('');
     }
+    return valid;
   };
 
   capasitySelect.addEventListener('change', numberOfRoomsHandler);
@@ -52,8 +59,8 @@
   checkInSelect.addEventListener('change', checkInOutTimesHandler);
   checkOutSelect.addEventListener('change', checkInOutTimesHandler);
 
-  var validateForm = function (el) {
-    if (!el.value) {
+  var validateForm = function (condition, el) {
+    if (condition) {
       el.style.border = '2px solid red';
       el.addEventListener('mousedown', function () {
         el.style.border = '1px solid #d9d9d3';
@@ -62,6 +69,13 @@
   };
 
   var validationHandler = function () {
+    var minTitleInputLength = titleInput.getAttribute('minlength');
+    var minInputPrice = priceInput.getAttribute('min');
+    var maxInputPrice = priceInput.getAttribute('max');
+
+    validateForm(titleInput.value.length < minTitleInputLength, titleInput);
+    validateForm(numberOfRoomsHandler() === false, capasitySelect);
+    validateForm(priceInput.value < minInputPrice || priceInput.value > maxInputPrice || !priceInput.value, priceInput);
   };
 
   document.querySelector('.ad-form__submit').addEventListener('click', validationHandler);

@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var positionLimits = {
+  var PositionLimit = {
     xLeft: -window.activation.mainPinWidth,
     xRight: (window.data.mapWidth - window.activation.mainPinWidth),
     yTop: 130 - window.utils.ACTIVE_PIN_HEIGHT,
@@ -18,22 +18,17 @@
       window.activation.activatePage();
     }
   };
+  var Position = function (xPos, yPos) {
+    this.x = xPos;
+    this.y = yPos;
+  };
 
   var pinOnMovePositionHandler = function (evt) {
-    var startPosition = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
-    var onMouseMove = function (moveEvt) {
-      var currentPosition = {
-        x: startPosition.x - moveEvt.clientX,
-        y: startPosition.y - moveEvt.clientY
-      };
-      var shiftPositions = {
-        x: window.activation.mainPin.offsetLeft - currentPosition.x,
-        y: window.activation.mainPin.offsetTop - currentPosition.y
-      };
+    var startPosition = new Position(evt.clientX, evt.clientY);
 
+    var onMouseMove = function (moveEvt) {
+      var currentPosition = new Position(startPosition.x - moveEvt.clientX, startPosition.y - moveEvt.clientY);
+      var shiftPositions = new Position(window.activation.mainPin.offsetLeft - currentPosition.x, window.activation.mainPin.offsetTop - currentPosition.y);
       var setPositionLimits = function (condition, parametr, id) {
         if (id === 'x') {
           if (condition) {
@@ -45,10 +40,10 @@
           }
         }
       };
-      setPositionLimits((shiftPositions.x < positionLimits.xLeft), positionLimits.xLeft, 'x');
-      setPositionLimits((shiftPositions.x > positionLimits.xRight), positionLimits.xRight, 'x');
-      setPositionLimits((shiftPositions.y < positionLimits.yTop), positionLimits.yTop);
-      setPositionLimits((shiftPositions.y > positionLimits.yBottom), positionLimits.yBottom);
+      setPositionLimits((shiftPositions.x < PositionLimit.xLeft), PositionLimit.xLeft, 'x');
+      setPositionLimits((shiftPositions.x > PositionLimit.xRight), PositionLimit.xRight, 'x');
+      setPositionLimits((shiftPositions.y < PositionLimit.yTop), PositionLimit.yTop);
+      setPositionLimits((shiftPositions.y > PositionLimit.yBottom), PositionLimit.yBottom);
 
       startPosition = {
         x: moveEvt.clientX,
