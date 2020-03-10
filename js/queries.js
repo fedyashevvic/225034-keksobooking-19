@@ -44,13 +44,11 @@
     });
   };
   var dataSendSuccess = function () {
-    newHouseForm.reset();
-    window.activation.disablePage();
+    resetPageHandler();
     showSuccessScreen();
   };
   var dataSendFormError = function () {
-    newHouseForm.reset();
-    window.activation.disablePage();
+    resetPageHandler();
     showErrorScreen();
   };
   newHouseForm.addEventListener('submit', function (evt) {
@@ -58,10 +56,13 @@
     evt.preventDefault();
   });
 
-  resetButton.addEventListener('click', function (evt) {
-    evt.preventDefault();
+  var resetPageHandler = function () {
+    window.data.mapFiltersForm.reset();
     newHouseForm.reset();
+    window.data.updatePins();
     window.activation.disablePage();
-  });
+  };
+
+  resetButton.addEventListener('click', resetPageHandler);
 
 })();

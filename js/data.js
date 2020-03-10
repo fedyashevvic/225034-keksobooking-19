@@ -19,19 +19,21 @@
       collection[i].hidden = boolean;
     }
   };
+  var removePinElements = function (el) {
+    el.remove();
+  };
+
   var renderPinItem = function (data) {
     var numberOfData = data.length > 5 ? 5 : data.length;
     var currentPins = document.querySelectorAll('button[type="button"].map__pin');
-    currentPins.forEach(function (el) {
-      el.remove();
-    });
     var currentDetails = document.querySelectorAll('article.map__card.popup');
-    currentDetails.forEach(function (el) {
-      el.remove();
-    });
+    currentPins.forEach(removePinElements);
+    currentDetails.forEach(removePinElements);
     for (var i = 0; i < numberOfData; i++) {
-      renderPinElement(data[i]);
-      window.card.renderPinDetails(data, i);
+      if (data[i].offer) {
+        renderPinElement(data[i]);
+        window.card.renderPinDetails(data, i);
+      }
     }
     document.querySelector('.map__pins').appendChild(fragment);
     hidePinElements((document.querySelectorAll('button[type="button"].map__pin')), true);
@@ -50,6 +52,8 @@
   window.data = {
     renderPinItem: renderPinItem,
     mapWidth: mapWidth,
+    updatePins: updatePins,
     hidePinElements: hidePinElements,
+    mapFiltersForm: mapFiltersForm,
   };
 })();

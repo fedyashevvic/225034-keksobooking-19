@@ -1,11 +1,19 @@
 'use strict';
-
 (function () {
   var housingTypeSelect = document.querySelector('#housing-type');
   var housingPriceSelect = document.querySelector('#housing-price');
   var housingRoomsSelect = document.querySelector('#housing-rooms');
   var housingGuestsSelect = document.querySelector('#housing-guests');
   var housingFeaturesCheckboxes = document.querySelectorAll('#housing-features input');
+
+  var isSimilar = function (type, field, arr) {
+    if (type !== 'any') {
+      arr = arr.filter(function (it) {
+        return it.offer[field] === (isNaN(type) ? type : parseInt(type, 10));
+      });
+    }
+    return arr;
+  };
 
   var applyFilters = function () {
     var offerType = housingTypeSelect.value;
@@ -14,30 +22,16 @@
     var guestsFilter = housingGuestsSelect.value;
     var similarPins = window.advertisments;
 
+    similarPins = isSimilar(offerType, 'type', similarPins);
+    similarPins = isSimilar(roomsFilter, 'rooms', similarPins);
+    similarPins = isSimilar(guestsFilter, 'guests', similarPins);
+
     for (var i = 0; i < housingFeaturesCheckboxes.length; i++) {
       if (housingFeaturesCheckboxes[i].checked) {
         similarPins = similarPins.filter(function (it) {
           return it.offer.features.includes(housingFeaturesCheckboxes[i].value);
         });
       }
-    }
-
-    if (offerType !== 'any') {
-      similarPins = similarPins.filter(function (it) {
-        return it.offer.type === offerType;
-      });
-    }
-
-    if (roomsFilter !== 'any') {
-      similarPins = similarPins.filter(function (it) {
-        return it.offer.rooms === parseInt(roomsFilter, 10);
-      });
-    }
-
-    if (guestsFilter !== 'any') {
-      similarPins = similarPins.filter(function (it) {
-        return it.offer.guests === parseInt(guestsFilter, 10);
-      });
     }
 
     switch (priceFilter) {
