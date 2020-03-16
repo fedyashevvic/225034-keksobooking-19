@@ -36,6 +36,8 @@
     mainPinPosition(mainPinWidth, mainPinHeight);
     mapElement.classList.add('map--faded');
     mainForm.classList.add('ad-form--disabled');
+    mainForm.querySelector('#price').setAttribute('min', '1000');
+    mainForm.querySelector('#price').setAttribute('placeholder', '1000');
   };
   disablePage();
 

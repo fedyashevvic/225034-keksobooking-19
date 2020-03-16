@@ -8,21 +8,43 @@
   var priceInput = document.querySelector('#price');
   var checkInSelect = document.querySelector('#timein');
   var checkOutSelect = document.querySelector('#timeout');
-
+  var NumberOfRoomsTemplate = {
+    one: 'При данном кол-ве комнат поместится только 1 человек',
+    two: 'При данном кол-ве комнат поместится до 2х человек',
+    three: 'При данном кол-ве комнат поместится до 3х человек',
+    other: 'При данном кол-ве комнат, допустим только вариант "Не для гостей"',
+    zeroNum: '0',
+    oneNum: '1',
+    twoNum: '2',
+    threeNum: '3',
+    handredNum: '100'
+  };
+  var PriceTemplate = {
+    bungalo: 'bungalo',
+    flat: 'flat',
+    house: 'house',
+    palace: 'palace',
+    min: 'min',
+    placeholder: 'placeholder',
+    zeroPrice: '0',
+    thousandPrice: '1000',
+    fiveThousandPrice: '5000',
+    tenThousandPrice: '10000',
+  };
 
   var numberOfRoomsHandler = function () {
     var valid = true;
-    if (roomSelect.value === '1' && capasitySelect.value !== '1') {
-      capasitySelect.setCustomValidity('При данном кол-ве комнат поместится только 1 человек');
+    if (roomSelect.value === NumberOfRoomsTemplate.oneNum && capasitySelect.value !== NumberOfRoomsTemplate.oneNum) {
+      capasitySelect.setCustomValidity(NumberOfRoomsTemplate.one);
       valid = false;
-    } else if (roomSelect.value === '2' && (capasitySelect.value === '3' || capasitySelect.value === '0')) {
-      capasitySelect.setCustomValidity('При данном кол-ве комнат поместится до 2х человек');
+    } else if (roomSelect.value === NumberOfRoomsTemplate.twoNum && (capasitySelect.value === NumberOfRoomsTemplate.threeNum || capasitySelect.value === NumberOfRoomsTemplate.zeroNum)) {
+      capasitySelect.setCustomValidity(NumberOfRoomsTemplate.two);
       valid = false;
-    } else if (roomSelect.value === '3' && capasitySelect.value === '0') {
-      capasitySelect.setCustomValidity('При данном кол-ве комнат поместится до 3х человек');
+    } else if (roomSelect.value === NumberOfRoomsTemplate.threeNum && capasitySelect.value === NumberOfRoomsTemplate.zeroNum) {
+      capasitySelect.setCustomValidity(NumberOfRoomsTemplate.three);
       valid = false;
-    } else if (roomSelect.value === '100' && capasitySelect.value !== '0') {
-      capasitySelect.setCustomValidity('При данном кол-ве комнат, допустим только вариант "Не для гостей"');
+    } else if (roomSelect.value === NumberOfRoomsTemplate.handredNum && capasitySelect.value !== NumberOfRoomsTemplate.zeroNum) {
+      capasitySelect.setCustomValidity(NumberOfRoomsTemplate.other);
       valid = false;
     } else {
       capasitySelect.setCustomValidity('');
@@ -34,16 +56,16 @@
   roomSelect.addEventListener('change', numberOfRoomsHandler);
 
   var minPriceHandler = function () {
-    if (apartmentTypeSelect.value === 'bungalo') {
-      priceInput.setAttribute('min', '0');
-    } else if (apartmentTypeSelect.value === 'flat') {
-      priceInput.setAttribute('min', '1000');
-    } else if (apartmentTypeSelect.value === 'house') {
-      priceInput.setAttribute('min', '5000');
-      priceInput.setAttribute('placeholder', '5000');
-    } else if (apartmentTypeSelect.value === 'palace') {
-      priceInput.setAttribute('min', '10000');
-      priceInput.setAttribute('placeholder', '10000');
+    if (apartmentTypeSelect.value === PriceTemplate.bungalo) {
+      priceInput.setAttribute(PriceTemplate.min, PriceTemplate.zeroPrice);
+    } else if (apartmentTypeSelect.value === PriceTemplate.flat) {
+      priceInput.setAttribute(PriceTemplate.min, PriceTemplate.thousandPrice);
+    } else if (apartmentTypeSelect.value === PriceTemplate.house) {
+      priceInput.setAttribute(PriceTemplate.min, PriceTemplate.fiveThousandPrice);
+      priceInput.setAttribute(PriceTemplate.placeholder, PriceTemplate.fiveThousandPrice);
+    } else if (apartmentTypeSelect.value === PriceTemplate.palace) {
+      priceInput.setAttribute(PriceTemplate.min, PriceTemplate.tenThousandPrice);
+      priceInput.setAttribute(PriceTemplate.placeholder, PriceTemplate.tenThousandPrice);
     }
   };
 
@@ -75,7 +97,7 @@
 
     validateForm(titleInput.value.length < minTitleInputLength, titleInput);
     validateForm(numberOfRoomsHandler() === false, capasitySelect);
-    validateForm(priceInput.value < minInputPrice || priceInput.value > maxInputPrice || !priceInput.value, priceInput);
+    validateForm(priceInput.valueAsNumber < minInputPrice || priceInput.valueAsNumber > maxInputPrice || !priceInput.value, priceInput);
   };
 
   document.querySelector('.ad-form__submit').addEventListener('click', validationHandler);
