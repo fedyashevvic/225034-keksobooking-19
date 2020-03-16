@@ -2,7 +2,7 @@
 
 (function () {
   var DATA_URL = 'https://js.dump.academy/keksobooking/data';
-  var DATA_SEND_URL = 'https://js.dump.academy/keasdaksobooking';
+  var DATA_SEND_URL = 'https://js.dump.academy/keksobooking';
   var GET = 'GET';
   var POST = 'POST';
   var CODE_SUCCESS = 200;
