@@ -1,5 +1,12 @@
 'use strict';
 (function () {
+  var PriceFilterRange = {
+    low: 'low',
+    middle: 'middle',
+    high: 'high',
+    lowLimit: 10000,
+    highLimit: 50000
+  };
   var housingTypeSelect = document.querySelector('#housing-type');
   var housingPriceSelect = document.querySelector('#housing-price');
   var housingRoomsSelect = document.querySelector('#housing-rooms');
@@ -35,19 +42,19 @@
     }
 
     switch (priceFilter) {
-      case 'low':
+      case PriceFilterRange.low:
         similarPins = similarPins.filter(function (it) {
-          return it.offer.price < 10000;
+          return it.offer.price < PriceFilterRange.lowLimit;
         });
         break;
-      case 'middle':
+      case PriceFilterRange.middle:
         similarPins = similarPins.filter(function (it) {
-          return it.offer.price > 10000 && it.offer.price < 50000;
+          return it.offer.price > PriceFilterRange.lowLimit && it.offer.price < PriceFilterRange.highLimit;
         });
         break;
-      case 'high':
+      case PriceFilterRange.high:
         similarPins = similarPins.filter(function (it) {
-          return it.offer.price > 50000;
+          return it.offer.price > PriceFilterRange.highLimit;
         });
         break;
     }

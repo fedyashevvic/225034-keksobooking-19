@@ -1,6 +1,16 @@
 'use strict';
 
 (function () {
+  var ApartmentType = {
+    flat: 'flat',
+    flatCyr: 'Квартира',
+    bungalo: 'bungalo',
+    bungaloCyr: 'Бунгало',
+    house: 'house',
+    houseCyr: 'Дом',
+    palace: 'palace',
+    palaceCyr: 'Дворец'
+  };
   var similarPinDetailsBlock = document.querySelector('#card').content.querySelector('.map__card');
 
   var hideElement = function (el) {
@@ -17,20 +27,20 @@
 
   var defineApartnemtType = function (data, key) {
     switch (data) {
-      case 'flat':
-        key.textContent = 'Квартира';
+      case ApartmentType.flat:
+        key.textContent = ApartmentType.flatCyr;
         break;
-      case 'bungalo':
-        key.textContent = 'Бунгало';
+      case ApartmentType.bungalo:
+        key.textContent = ApartmentType.bungaloCyr;
         break;
-      case 'house':
-        key.textContent = 'Дом';
+      case ApartmentType.house:
+        key.textContent = ApartmentType.houseCyr;
         break;
-      case 'palace':
-        key.textContent = 'Дворец';
+      case ApartmentType.palace:
+        key.textContent = ApartmentType.palaceCyr;
         break;
       default:
-        key.style.display = 'none';
+        hideElement(key);
     }
   };
 
